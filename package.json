@@ -1,0 +1,24 @@
+{
+  "name": "typescrip-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "practice.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhon0010/typescrip-practice.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhon0010/typescrip-practice/issues"
+  },
+  "homepage": "https://github.com/jhon0010/typescrip-practice#readme",
+  "devDependencies": {
+    "@types/es6-promise": "^3.3.0",
+    "lite-server": "^2.5.4"
+  }
+}
