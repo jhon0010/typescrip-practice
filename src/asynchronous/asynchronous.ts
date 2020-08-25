@@ -24,7 +24,7 @@ function greeting(name: string) {
   console.log(`Hello ${name}`);
 }
 
-let greetingVariableFUnction = (name: string) => {
+let greetingVariableFunction = (name: string) => {
   console.log(`Hello! - ${name}`);
 };
 
@@ -42,7 +42,7 @@ function printInfoPerson(firstName: string, lastName: string, callback: Function
   callback(fullName);
 }
 
-printInfoPerson("John", "Doe", greetingVariableFUnction);
+printInfoPerson("John", "Doe", greetingVariableFunction);
 
 let failerFunction = () => console.log(`Handling errors .. `);
 
@@ -56,7 +56,7 @@ let failerFunction = () => console.log(`Handling errors .. `);
  */
 const hasMeeting: boolean = false;
 import { Promise } from "es6-promise";
-const meeting = new Promise((resolve, reject) => {
+const meetingPromise = new Promise((resolve, reject) => {
   //do stuff
 
   const meeting = {
@@ -72,10 +72,38 @@ const meeting = new Promise((resolve, reject) => {
   }
 });
 
-meeting
+const addToCalendar = (meeting) => {
+  const calendar = `The ${meeting.name} is schedule at ${meeting.when}`;
+  return Promise.resolve(calendar);
+};
+
+/**
+ * The then part receives the resolve(meeting), res = meeting object
+ * In the cath part you recive the object in the reject part in the meeting case is a new Error.
+ */
+meetingPromise
+  .then(addToCalendar) // Chaining promises ~= chain callbacks
   .then((res) => {
+    // this then receives the returning data for addToCalendar promise
+    //resolve data
     console.log(`Meeting scheduled! ${res}`);
   })
   .catch((err) => {
+    //reject data
     console.error(err.message);
   });
+
+/**
+ * ******************  Promise all
+ */
+
+const promise1 = Promise.resolve("Finish promise 1");
+const promise2 = new Promise((res, rej) => {
+  setTimeout(() => res("Finish promise 2"), 2000);
+});
+
+// When you need to process all the promises you can use it
+Promise.all([promise1, promise2]);
+
+// If yoy want only wait for the first result use this.
+Promise.race([promise1, promise2]);
