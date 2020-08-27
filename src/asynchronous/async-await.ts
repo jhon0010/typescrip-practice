@@ -54,3 +54,43 @@ async function myMeeting() {
  */
 
 myMeeting();
+
+let Characteristic: {
+  id: number;
+  slug: string;
+  value: number;
+};
+
+const inputCharacteristics = [
+  { id: 0, slug: "area", value: 50 },
+  { id: 0, slug: "nro-cuartos", value: 4 },
+];
+const dbCharacteristics = [
+  { slug: "area", id: 92 },
+  { slug: "nro-cuartos", id: 110 },
+];
+
+let returnWithId = (
+  dbCharacteristic: { id: number; slug: string; value: number },
+  input: { id: number; slug: string; value: number }
+) => {
+  input.id = dbCharacteristic.id;
+  return input;
+};
+
+const characteristics = dbCharacteristics.map((db) =>
+  inputCharacteristics.filter((input) => input.slug === db.slug).map((db, input) => returnWithId)
+);
+
+console.log(`********************** ${JSON.stringify(characteristics)}`);
+
+console.log(typeof null); // is an object
+
+/**
+ * This is known as an IIFE (Immediately Invoke Function Expression)
+ *
+ * This was for avoid collision in variables names, but now we just use let and const
+ */
+(function sum(num1, num2) {
+  return num1 + num2;
+})(5, 2);
