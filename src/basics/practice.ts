@@ -91,7 +91,7 @@ type otherOne = Combined & Conflicting;
 
 // Unions types
 
-"foo"; // has the type "foo"
+("foo"); // has the type "foo"
 console.log(`${"foo"}`); //  literal types
 
 declare function pad(s: string, n: number, direction: "left" | "right"): string;
