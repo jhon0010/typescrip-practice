@@ -26,7 +26,7 @@ setTimeout(() => {
 }, 100);
 
 /**
- * We can cancel process in background
+ * We can cancel process in background (timeout)
  */
 setTimeout(() => {
   if (cancel) {
@@ -41,3 +41,11 @@ setTimeout(() => {
 const greeting = (name: string) => console.log(`Hello ${name} !!`);
 
 setTimeout(greeting, 400, "Jhon");
+
+const interval = setInterval(() => {
+  if (cancel) {
+    clearTimeout(interval);
+  } else {
+    console.log(`Hello every 10 ml second, until stop!`);
+  }
+}, 10);
