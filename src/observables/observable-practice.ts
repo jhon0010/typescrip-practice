@@ -13,6 +13,7 @@ import {
   scan,
   pluck,
 } from "rxjs/operators";
+import { BehaviorSubject } from "rx";
 
 /**
  * We can create a observer based on an object
@@ -73,6 +74,11 @@ intervalObservable
  * With subject we can emit the events when we want to
  */
 const subject = new Subject();
+
+/**
+ * This is the same subject but with an initial value.
+ */
+const behaviourSubject = new BehaviorSubject("Initial value");
 
 subject.subscribe({
   // we can define the object on the fly
