@@ -1,6 +1,18 @@
-import { Observable, interval, throwError, Subject } from "rxjs";
+import { Observable, interval, throwError, Subject, pipe, of, from } from "rxjs";
 
-import { map, throttle, throttleTime, catchError } from "rxjs/operators";
+import {
+  map,
+  throttle,
+  throttleTime,
+  catchError,
+  filter,
+  flatMap,
+  debounceTime,
+  distinctUntilChanged,
+  reduce,
+  scan,
+  pluck,
+} from "rxjs/operators";
 
 /**
  * We can create a observer based on an object
@@ -44,7 +56,7 @@ setTimeout(() => {
 /**
  * Observable that emits events each x milliseconds
  */
-const intervalObservable = interval(1000);
+const intervalObservable = interval(100);
 
 /**
  * As a value recives a eventId that is autonumeric
@@ -75,6 +87,66 @@ subject.subscribe({
   },
 });
 
+subject.subscribe({
+  next: (value) => console.log(`I receive a value ${value}`),
+});
+
 setInterval(() => {
   subject.next("Emit this event from subject");
-}, 100);
+}, 10000);
+
+intervalObservable
+  .pipe(
+    filter((num: number) => num % 2 == 0),
+    map((num) => {
+      console.log(`Only pairs ${num}`);
+      return num;
+    })
+  )
+  .subscribe({
+    next: (num) => {
+      console.log(`Arrives ${num}`);
+    },
+  });
+
+intervalObservable
+  .pipe(
+    debounceTime(110) // this function wait for  emit the last emited event when their timestamp pass this time (argument) in miliseconds
+  )
+  .subscribe({
+    next: (value) => console.log(`Receiving a  ${value}`),
+  });
+
+intervalObservable
+  .pipe(
+    map((value) => {
+      return value < 10; // this return true 10 times and false for the rest
+    }),
+    distinctUntilChanged() // this operator allow to us to filter the same emited values
+  )
+  .subscribe({
+    next: (value) => console.log(`Uniques values a  ${value}`), // only arrives once true and false
+  });
+
+from([1, 2, 3, 4, 5])
+  .pipe(
+    reduce((accumulator, currentValue) => {
+      accumulator = accumulator + currentValue;
+      return accumulator;
+    }, 0)
+  )
+  .subscribe({ next: (value) => console.log(`Arrives a value`, value) });
+
+from([1, 2, 3, 4, 5])
+  .pipe(
+    scan((accumulator, currentValue) => {
+      // scan is similar to reduce but it emits the value of each step
+      accumulator = accumulator + currentValue;
+      return accumulator;
+    }, 0)
+  )
+  .subscribe({ next: (value) => console.log(`Arrives a value`, value) });
+
+of([1, 2, 4]) // emit the copmpleted array
+  .pipe(pluck("length")) // allow to us to access to the objects property directly with a string value
+  .subscribe({ next: (value) => console.log(`SIZE = `, value) });
